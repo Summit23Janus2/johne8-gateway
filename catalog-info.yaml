@@ -1,0 +1,69 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: johne8-johne8-poi-gateway-app-dev
+  annotations:
+    argocd/app-name: johne8-johne8-poi-gateway-app-dev
+    backstage.io/kubernetes-id: johne8-johne8-poi-gateway-app-dev
+    backstage.io/kubernetes-namespace: johne8
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/instance=johne8-johne8-poi-gateway-app-dev'
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: Summit23Janus2/johne8-gateway
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.summit23blues.6mbu.p1.openshiftapps.com/dev-pipelines/ns/johne8/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.summit23blues.6mbu.p1.openshiftapps.com/k8s/ns/johne8/deployments/johne8-poi-gateway-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.summit23blues.6mbu.p1.openshiftapps.com/#https://github.com/Summit23Janus2/johne8-gateway?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/johne8"
+  system: workshop-system-johne8
+  providesApis:
+    - gateway-api-johne8
+  consumesApis:
+    - backend-api-johne8
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-johne8
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/johne8"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: gateway-api-johne8
+  description: API surface exposed to interact with Backends (summit POIs + parks data) via the Gateway
+  links:
+    - url: http://johne8-poi-gateway-app-johne8.apps.summit23blues.6mbu.p1.openshiftapps.com/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/Summit23Janus2/johne8-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/johne8"
+  system: workshop-system-johne8
+  definition:
+    $text: https://github.com/Summit23Janus2/johne8-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
